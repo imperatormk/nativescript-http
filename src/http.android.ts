@@ -106,8 +106,11 @@ function onRequestComplete(requestId: number, result: com.klippa.NativeScriptHTT
                 } else {
                     str = result.responseAsString;
                 }
-
-                return parseJSON(str);
+                try {
+                    return parseJSON(str);
+                } catch(e) {
+                    return str;
+                }
             },
             toImage: () => {
                 return new Promise<any>((resolveImage, rejectImage) => {
