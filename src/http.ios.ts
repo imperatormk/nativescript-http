@@ -300,7 +300,14 @@ export function request(options: HttpRequestOptions): Promise<HttpResponse> {
                                         throw new Error("Response content may not be converted to string");
                                     }
                                 },
-                                toJSON: (encoding?: any) => parseJSON(NSDataToString(data, encoding)),
+                                toJSON: (encoding?: any) => {
+                                    const str = NSDataToString(data, encoding);
+                                    try {
+                                        return parseJSON(str);
+                                    } catch(e) {
+                                        return str;
+                                    }
+                                },
                                 toImage: () => {
                                     return new Promise((resolve, reject) => {
                                         (<any>UIImage).tns_decodeImageWithDataCompletion(data, image => {
